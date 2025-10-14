@@ -4,7 +4,13 @@
 Collaborative task manager with teams, projects, tasks, comments, and role-based permissions. Backend: Laravel + Sanctum (API). Frontend: React (Vite). Auth via Breeze API. Dockerized with MySQL.
 
 ## Quick Start (Docker)
-1) Start services
+1) Copy environment file
+```bash
+cd backend
+cp .env.example .env
+```
+
+2) Start services
 ```bash
 docker compose up -d --build
 ```
@@ -12,12 +18,12 @@ Services:
 - API (Laravel): `http://localhost:8080`
 - Frontend (Vite): `http://localhost:3000`
 
-2) Initialize database (first run or when resetting)
+3) Initialize database (first run or when resetting)
 ```bash
 docker compose exec backend php artisan migrate:fresh --seed
 ```
 
-3) Login with seeded credentials (below) or register a new user.
+4) Login with seeded credentials (below) or register a new user.
 
 Troubleshooting:
 - If API can’t connect to DB, wait a few seconds and rerun the migrate command.
