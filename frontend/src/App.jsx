@@ -291,7 +291,7 @@ function App() {
             <div className="container py-4">
 
             <div className="row g-4">
-                <div className="col-12 col-lg-6">
+                <div className="col-12 col-lg-4">
                     <div className="card h-100">
                         <div className="card-body">
                             <div className="d-flex align-items-center mb-3">
@@ -339,7 +339,7 @@ function App() {
                     </div>
                 </div>
 
-                <div className="col-12 col-lg-6">
+                <div className="col-12 col-lg-8">
                     <div className="card h-100">
                         <div className="card-body">
                             <div className="d-flex align-items-center mb-3">

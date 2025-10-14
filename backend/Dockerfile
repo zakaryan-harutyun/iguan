@@ -17,22 +17,30 @@ COPY . /var/www/html
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Ensure .env exists and APP_KEY is set
-RUN set -ex \
-    && if [ ! -f .env ]; then \
+# Create .env file from .env.example if it exists, otherwise create basic one
+RUN if [ -f .env.example ]; then \
+        cp .env.example .env; \
+    else \
         echo "APP_NAME=Laravel" > .env \
         && echo "APP_ENV=local" >> .env \
         && echo "APP_KEY=" >> .env \
         && echo "APP_DEBUG=true" >> .env \
-        && echo "APP_URL=http://localhost" >> .env \
+        && echo "APP_URL=http://localhost:8080" >> .env \
         && echo "DB_CONNECTION=mysql" >> .env \
         && echo "DB_HOST=mysql" >> .env \
         && echo "DB_PORT=3306" >> .env \
         && echo "DB_DATABASE=iguan" >> .env \
         && echo "DB_USERNAME=iguan" >> .env \
-        && echo "DB_PASSWORD=iguan" >> .env; \
-    fi \
-    && php artisan key:generate --force
+        && echo "DB_PASSWORD=iguan" >> .env \
+        && echo "SESSION_DRIVER=cookie" >> .env \
+        && echo "SANCTUM_STATEFUL_DOMAINS=localhost:3000,127.0.0.1:3000" >> .env \
+        && echo "SESSION_DOMAIN=localhost" >> .env \
+        && echo "FRONTEND_URL=http://localhost:3000" >> .env \
+        && echo "SESSION_SECURE_COOKIE=false" >> .env; \
+    fi
+
+# Generate APP_KEY
+RUN php artisan key:generate --force
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
