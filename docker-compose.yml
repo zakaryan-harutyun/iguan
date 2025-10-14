@@ -1,0 +1,51 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: iguan
+      MYSQL_USER: iguan
+      MYSQL_PASSWORD: iguan
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3306:3306'
+    volumes:
+      - db_data:/var/lib/mysql
+    command: ['--default-authentication-plugin=mysql_native_password']
+
+  backend:
+    build: ./backend
+    depends_on:
+      - mysql
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: iguan
+      DB_USERNAME: iguan
+      DB_PASSWORD: iguan
+      APP_ENV: local
+      APP_DEBUG: 'true'
+      APP_URL: http://localhost:8080
+      SESSION_DRIVER: cookie
+      SANCTUM_STATEFUL_DOMAINS: localhost:3000,127.0.0.1:3000
+      SESSION_DOMAIN: localhost
+      FRONTEND_URL: http://localhost:3000
+      SESSION_SECURE_COOKIE: 'false'
+    volumes:
+      - ./backend:/var/www/html
+    ports:
+      - '8080:80'
+    command: sh -c "composer install --no-interaction --prefer-dist --optimize-autoloader && php artisan key:generate --force && apache2-foreground"
+
+  frontend:
+    build: ./frontend
+    environment:
+      VITE_API_URL: http://localhost:8080
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend:/app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 3000"
+
+volumes:
+  db_data: {}
