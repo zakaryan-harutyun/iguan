@@ -24,12 +24,18 @@ cd backend
 composer install
 ```
 
-4) Initialize database (first run or when resetting)
+4) Generate application key
 ```bash
-docker compose exec backend php artisan migrate:fresh --seed
+cd backend
+php artisan key:generate
 ```
 
-5) Login with seeded credentials (below) or register a new user.
+5) Initialize database (first run or when resetting)
+```bash
+php artisan migrate:fresh --seed
+```
+
+6) Login with seeded credentials (below) or register a new user.
 
 Troubleshooting:
 - If API can’t connect to DB, wait a few seconds and rerun the migrate command.
