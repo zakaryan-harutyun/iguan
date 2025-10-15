@@ -18,12 +18,18 @@ Services:
 - API (Laravel): `http://localhost:8080`
 - Frontend (Vite): `http://localhost:3000`
 
-3) Initialize database (first run or when resetting)
+3) Install PHP dependencies
+```bash
+cd backend
+composer install
+```
+
+4) Initialize database (first run or when resetting)
 ```bash
 docker compose exec backend php artisan migrate:fresh --seed
 ```
 
-4) Login with seeded credentials (below) or register a new user.
+5) Login with seeded credentials (below) or register a new user.
 
 Troubleshooting:
 - If API can’t connect to DB, wait a few seconds and rerun the migrate command.
